@@ -1,6 +1,7 @@
 package calculator_gui;
 
 import java.awt.BorderLayout;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -14,25 +15,71 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 
-// break when its too large
-public class GUI implements ActionListener, KeyListener{
+public class GUI implements ActionListener, KeyListener {
 	
 	private static final int WIDTH = 1900;
     private static final int HEIGHT = 1000;
     private JLabel 	displayField, hexField, decField, binField, octField;
     private JRadioButton hex, dec, oct, bin;
-    private String base;
+    private String base = "dec";
     private JButton oneBtn, twoBtn, threeBtn, fourBtn, fiveBtn, sixBtn, sevenBtn, eightBtn, nineBtn, zeroBtn;
     private JButton aBtn, bBtn, cBtn, dBtn, eBtn, fBtn;
-    private JButton addBtn, subBtn, multBtn, divBtn,equalsBtn, clearBtn;
-    static int operation =0;
+    private JButton addBtn, subBtn, multBtn, divBtn,equalsBtn, clearBtn; 
+    private JButton decimalBtn, negBtn, backBtn, squareBtn, expBtn, firstBtn, secondBtn, button;
+    static int op =0;
+    static String first = "", second = "";
+	static int result = 0;
+	private JPanel textPanel = new JPanel(new GridLayout(4, 2));
+	JPanel fPanel = new JPanel(new GridLayout(5, 3));
+	JPanel alpPanel = new JPanel(new GridLayout(5, 3));
+	JPanel one = new JPanel();
+	JPanel two = new JPanel();
+	JPanel five = new JPanel();
+	JPanel six = new JPanel();
+	private final JMenuBar menuBar = new JMenuBar();
+	private final JMenu calculator = new JMenu("Calculator");
+	private final JMenu game1 = new JMenu("2048");
+	private final JMenu game2 = new JMenu("Snake");
+	private final JMenu game3 = new JMenu("Game3");
+	private final JMenu themes = new JMenu("Themes");
+	private final JMenuItem dark = new JMenuItem("Dark Theme");
+	private final JMenuItem light = new JMenuItem("Light Theme");
+	private final JMenuItem blue = new JMenuItem("Blue Theme");
+	private final JMenu achive = new JMenu("Achivements");
+
+    
     
     public GUI() {
+    	
+    	// adds action listeners to all the menu items
+    	dark.addActionListener(this);
+    	light.addActionListener(this);
+    	blue.addActionListener(this);
+    	game1.addActionListener(this);
+    	game2.addActionListener(this);
+    	game3.addActionListener(this);
+    	themes.addActionListener(this);
+    	achive.addActionListener(this);
+    	
+    	themes.add(dark);
+    	themes.add(light);
+    	themes.add(blue);
+    	
+    	menuBar.add(calculator);
+    	menuBar.add(game1);
+    	menuBar.add(game2);
+    	menuBar.add(game3);
+    	menuBar.add(themes);
+    	menuBar.add(achive);
     	
     	hex = new JRadioButton("HEX");
     	hexField = new JLabel("0");
@@ -55,145 +102,94 @@ public class GUI implements ActionListener, KeyListener{
     	binField.setFont(new Font("Times New Roman", Font.BOLD, 20));
     	bin.addActionListener(this);
     	
-    	ButtonGroup group = new ButtonGroup();
-    	group.add(hex);
-    	group.add(oct);
-    	group.add(bin);
-    	group.add(dec);
-    	
-    	JPanel one = new JPanel();
-    	JPanel two = new JPanel();
-    	JPanel five = new JPanel();
-    	JPanel six = new JPanel();
-    	JPanel textPanel = new JPanel(new GridLayout(4, 2));
-    	textPanel.add(hex);
-    	textPanel.add(hexField);
-    	textPanel.add(oct);
-    	textPanel.add(octField);
-    	textPanel.add(dec);
-    	textPanel.add(decField);
-    	textPanel.add(bin);
-    	textPanel.add(binField);
-    	
-    	JFrame frame = new JFrame("Calculator");
-        frame.setTitle("Calculator");
-        frame.setSize(WIDTH, HEIGHT);
-
-        JPanel buttonPanel = new JPanel(new GridLayout(4, 3));        
         displayField = new JLabel("0");  
-        displayField.setFont(new Font("Times New Roman", Font.BOLD, 40));
-        
-        frame.setLayout( new GridLayout(3,3));
-        
-        frame.add(one);
-        frame.add(two);
-        frame.add(displayField);
-    	
+        displayField.setFont(new Font("Times New Roman", Font.BOLD, 60));
+        	
     	zeroBtn = new JButton("0");
     	zeroBtn.addActionListener(this);
     	zeroBtn.setBackground(Color.WHITE);
     	zeroBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(zeroBtn);
     	
     	oneBtn = new JButton("1");
     	oneBtn.addActionListener(this);
     	oneBtn.setBackground(Color.WHITE);
     	oneBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(oneBtn);
     	
     	twoBtn = new JButton("2");
     	twoBtn.addActionListener(this);
     	twoBtn.setBackground(Color.WHITE);
     	twoBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(twoBtn);
     	
     	threeBtn = new JButton("3");
     	threeBtn.addActionListener(this);
     	threeBtn.setBackground(Color.WHITE);
     	threeBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(threeBtn);
     	
     	fourBtn = new JButton("4");
     	fourBtn.addActionListener(this);
     	fourBtn.setBackground(Color.WHITE);
     	fourBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(fourBtn);
     	
     	fiveBtn = new JButton("5");
     	fiveBtn.addActionListener(this);
     	fiveBtn.setBackground(Color.WHITE);
     	fiveBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(fiveBtn);
     	
     	sixBtn = new JButton("6");
     	sixBtn.addActionListener(this);
     	sixBtn.setBackground(Color.WHITE);
     	sixBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(sixBtn);
     	
     	sevenBtn = new JButton("7");
     	sevenBtn.addActionListener(this);
     	sevenBtn.setBackground(Color.WHITE);
     	sevenBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(sevenBtn);
     	
     	eightBtn = new JButton("8");
     	eightBtn.addActionListener(this);
     	eightBtn.setBackground(Color.WHITE);
     	eightBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(eightBtn);
     	
     	nineBtn = new JButton("9");
     	nineBtn.addActionListener(this);
     	nineBtn.setBackground(Color.WHITE);
     	nineBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
-    	buttonPanel.add(nineBtn);
-    	
-    	JPanel alpPanel = new JPanel(new GridLayout(4, 3));
     	
     	aBtn = new JButton("A");
     	aBtn.addActionListener(this);
     	aBtn.setBackground(Color.WHITE);
     	aBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	aBtn.setEnabled(false);
-    	alpPanel.add(aBtn);
     	
     	bBtn = new JButton("B");
     	bBtn.addActionListener(this);
     	bBtn.setBackground(Color.WHITE);
     	bBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	bBtn.setEnabled(false);
-    	alpPanel.add(bBtn);
     	
     	cBtn = new JButton("C");
     	cBtn.addActionListener(this);
     	cBtn.setBackground(Color.WHITE);
     	cBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	cBtn.setEnabled(false);
-    	alpPanel.add(cBtn);
     	
     	dBtn = new JButton("D");
     	dBtn.addActionListener(this);
     	dBtn.setBackground(Color.WHITE);
     	dBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	dBtn.setEnabled(false);
-    	alpPanel.add(dBtn);
     	
     	eBtn = new JButton("E");
     	eBtn.addActionListener(this);
     	eBtn.setBackground(Color.WHITE);
     	eBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	eBtn.setEnabled(false);
-    	alpPanel.add(eBtn);
     	
     	fBtn = new JButton("F");
     	fBtn.addActionListener(this);
     	fBtn.setBackground(Color.WHITE);
     	fBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	fBtn.setEnabled(false);
-    	alpPanel.add(fBtn);
-    	
-    	JPanel fPanel = new JPanel(new GridLayout(5, 1));
     	
     	addBtn = new JButton("+");
     	addBtn.setBackground(Color.WHITE);
@@ -225,21 +221,111 @@ public class GUI implements ActionListener, KeyListener{
     	clearBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	clearBtn.addActionListener(this);
     	
-    	fPanel.add(addBtn);
-    	fPanel.add(subBtn);
-    	fPanel.add(multBtn);
-    	fPanel.add(divBtn);
-    	fPanel.add(equalsBtn);
-    	fPanel.add(clearBtn);
+    	decimalBtn = new JButton(".");
+    	decimalBtn.addActionListener(this);
+    	decimalBtn.setBackground(Color.WHITE);
+    	decimalBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	
+    	negBtn = new JButton("-(x)");
+    	negBtn.addActionListener(this);
+    	negBtn.setBackground(Color.WHITE);
+    	negBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
     	
+    	backBtn = new JButton("Delete");
+    	backBtn.addActionListener(this);
+    	backBtn.setBackground(Color.WHITE);
+    	backBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    	
+    	squareBtn = new JButton("sqrt");
+    	squareBtn.addActionListener(this);
+    	squareBtn.setBackground(Color.WHITE);
+    	squareBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    	
+    	expBtn = new JButton("^");
+    	expBtn.addActionListener(this);
+    	expBtn.setBackground(Color.WHITE);
+    	expBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    	
+    	firstBtn = new JButton("1st");
+    	firstBtn.addActionListener(this);
+    	firstBtn.setBackground(Color.WHITE);
+    	firstBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    	
+    	secondBtn = new JButton("2nd");
+    	secondBtn.addActionListener(this);
+    	secondBtn.setBackground(Color.WHITE);
+    	secondBtn.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    	
+    	firstBtn.setEnabled(false);
+		secondBtn.setEnabled(false);
+    	
+    	button = new JButton(" ");
+    	button.addActionListener(this);
+    	button.setBackground(Color.WHITE);
+    	button.setFont(new Font("Times New Roman", Font.BOLD, 18));
+    	
+    	textPanel.add(hex);
+    	textPanel.add(hexField);
+    	textPanel.add(oct);
+    	textPanel.add(octField);
+    	textPanel.add(dec);
+    	textPanel.add(decField);
+    	textPanel.add(bin);
+    	textPanel.add(binField);
+    	
+    	ButtonGroup group = new ButtonGroup();
+    	group.add(hex);
+    	group.add(oct);
+    	group.add(bin);
+    	group.add(dec);
+    	
+    	JPanel fPanel = new JPanel(new GridLayout(5, 3));
+    	fPanel.add(expBtn);
+    	fPanel.add(squareBtn);
+    	fPanel.add(button);
+    	fPanel.add(aBtn);
+    	fPanel.add(bBtn);
+    	fPanel.add(sevenBtn);
+    	fPanel.add(cBtn);
+    	fPanel.add(dBtn);
+    	fPanel.add(fourBtn);
+    	fPanel.add(eBtn);
+    	fPanel.add(fBtn);
+    	fPanel.add(oneBtn);
+    	fPanel.add(firstBtn);
+    	fPanel.add(secondBtn);
+    	fPanel.add(negBtn);
+    	
+    	alpPanel.add(clearBtn);
+    	alpPanel.add(backBtn);
+    	alpPanel.add(divBtn);
+    	alpPanel.add(eightBtn);
+    	alpPanel.add(nineBtn);
+    	alpPanel.add(multBtn);
+    	alpPanel.add(fiveBtn);
+    	alpPanel.add(sixBtn);
+    	alpPanel.add(subBtn);
+    	alpPanel.add(twoBtn);
+    	alpPanel.add(threeBtn);
+    	alpPanel.add(addBtn);
+    	alpPanel.add(zeroBtn);
+    	alpPanel.add(decimalBtn);
+    	alpPanel.add(equalsBtn);
+    	
+    	JFrame frame = new JFrame("Calculator");
+        frame.setTitle("Calculator");
+        frame.setSize(WIDTH, HEIGHT);
+    	frame.add(one);
+        frame.add(two);
+        frame.add(displayField);
     	frame.add(textPanel);
     	frame.add(five);
     	frame.add(six); 
     	frame.add(fPanel);
     	frame.add(alpPanel);
-    	frame.add(buttonPanel);
+    	frame.setLayout( new GridLayout(3,3));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setJMenuBar(menuBar);
         frame.setVisible(true);
     	
     }
@@ -251,6 +337,58 @@ public class GUI implements ActionListener, KeyListener{
     }
     
     public void actionPerformed(ActionEvent e){
+    	
+    	if (e.getSource() == dark) {
+    		
+    		aBtn.setBackground(Color.lightGray);
+    		bBtn.setBackground(Color.lightGray);
+    		cBtn.setBackground(Color.lightGray);
+    		dBtn.setBackground(Color.lightGray);
+    		eBtn.setBackground(Color.lightGray);
+    		fBtn.setBackground(Color.lightGray);
+    		
+    		oneBtn.setBackground(Color.lightGray);
+    		twoBtn.setBackground(Color.lightGray);
+    		threeBtn.setBackground(Color.lightGray);
+    		fourBtn.setBackground(Color.lightGray);
+    		fiveBtn.setBackground(Color.lightGray);
+    		sixBtn.setBackground(Color.lightGray);
+    		sevenBtn.setBackground(Color.lightGray);
+    		eightBtn.setBackground(Color.lightGray);
+    		nineBtn.setBackground(Color.lightGray);
+    		zeroBtn.setBackground(Color.lightGray);
+    		
+    		textPanel.setBackground(Color.GRAY);
+    		
+    	}
+    	
+    	if (e.getSource() == light) {
+    		
+    	}
+    	
+    	if (e.getSource() == blue) {
+    		
+    	}
+    	
+    	if (e.getSource() == game1) {
+    		
+    	}
+    	
+    	if (e.getSource() == game2) {
+    		
+    	}
+    	
+    	if (e.getSource() == game3) {
+    		
+    	}
+    	
+    	if (e.getSource() == calculator) {
+    		
+    	}
+    	
+    	if (e.getSource() == achive) {
+    		
+    	}
     	
     	// disables all buttons that don't apply to hex
     	if (e.getSource() == hex) {
@@ -271,6 +409,9 @@ public class GUI implements ActionListener, KeyListener{
     		sevenBtn.setEnabled(true);
     		eightBtn.setEnabled(true);
     		nineBtn.setEnabled(true);
+    		
+    		firstBtn.setEnabled(false);
+    		secondBtn.setEnabled(false);
     		
     	}
     	
@@ -294,6 +435,9 @@ public class GUI implements ActionListener, KeyListener{
     		eightBtn.setEnabled(false);
     		nineBtn.setEnabled(false);
     		
+    		firstBtn.setEnabled(false);
+    		secondBtn.setEnabled(false);
+    		
     	}
     	
     	// disables all buttons that don't apply to decimal 
@@ -316,6 +460,9 @@ public class GUI implements ActionListener, KeyListener{
     		eightBtn.setEnabled(true);
     		nineBtn.setEnabled(true);
     		
+    		firstBtn.setEnabled(false);
+    		secondBtn.setEnabled(false);
+    		
     	}
     	// disables all buttons that don't apply to binary
     	if (e.getSource() == bin) {
@@ -336,6 +483,9 @@ public class GUI implements ActionListener, KeyListener{
     		sevenBtn.setEnabled(false);
     		eightBtn.setEnabled(false);
     		nineBtn.setEnabled(false);
+    		
+    		firstBtn.setEnabled(true);
+    		secondBtn.setEnabled(true);
     		
     	}
     	
@@ -438,6 +588,116 @@ public class GUI implements ActionListener, KeyListener{
     	// Clears all text fields
     	if (e.getSource() == clearBtn) {
     		Clear();
+    	}
+    	
+    	// 
+    	if (e.getSource() == addBtn) {
+    		
+    		op = 1;
+    		first = decField.getText();
+    		displayField.setText("0");
+   		 	decField.setText("0");
+   		 	hexField.setText("0");
+   		 	binField.setText("0");
+   		 	octField.setText("0");
+    		
+    	}
+    	
+    	if (e.getSource() == subBtn) {
+    		
+    		op = 2;
+    		first = decField.getText();
+    		displayField.setText("0");
+   		 	decField.setText("0");
+   		 	hexField.setText("0");
+   		 	binField.setText("0");
+   		 	octField.setText("0");
+    		
+    	}
+    	
+    	if (e.getSource() == multBtn) {
+    		op = 3;
+    		first = decField.getText();
+    		displayField.setText("0");
+   		 	decField.setText("0");
+   		 	hexField.setText("0");
+   		 	binField.setText("0");
+   		 	octField.setText("0");
+    	}
+    	
+    	if (e.getSource() == divBtn) {
+    		
+    		op = 4;
+    		first = decField.getText();
+    		displayField.setText("0");
+   		 	decField.setText("0");
+   		 	hexField.setText("0");
+   		 	binField.setText("0");
+   		 	octField.setText("0");
+    	}
+    	
+    	if (e.getSource() == expBtn) {
+    		op = 5;
+    		
+    		first = decField.getText();
+    		displayField.setText("0");
+   		 	decField.setText("0");
+   		 	hexField.setText("0");
+   		 	binField.setText("0");
+   		 	octField.setText("0");
+    	}
+    	
+    	if (e.getSource() == equalsBtn) {
+    		
+    		second = decField.getText();
+    		
+    		switch(op)
+    		
+    		{
+    		
+    		case 1: 
+    			result = Adding(Integer.parseInt(first), Integer.parseInt(second));
+    			break;
+    		
+    		case 2: 
+    			result = Subtracting(Integer.parseInt(first), Integer.parseInt(second));;
+    			break;
+    		
+    		case 3: 
+    			result = Mult(Integer.parseInt(first), Integer.parseInt(second));;
+    			break;
+    		
+    		case 4: 
+    			result = Division(Integer.parseInt(first), Integer.parseInt(second));
+    			break;
+    			
+    		case 5:
+    			result = Exponent(Integer.parseInt(first), Integer.parseInt(second));
+    			break;
+    		
+    		default: 
+    			result= 0;
+    		
+    		}
+    		
+    		switch(base)
+    		{
+    		case "hex": 
+    			displayField.setText(DecimalToHex(result));
+    			break;
+    		case "oct":
+    			displayField.setText(DecimalToOct(result));
+    			break;
+    		case "bin":
+    			displayField.setText(DecimalToBinary(result));
+    			break;
+    		case "dec":
+    			displayField.setText(Integer.toString(result));
+    			break;
+    		}
+    		
+    		realtime(displayField.getText(), base);
+    		
     	}
     	
     }
@@ -561,12 +821,14 @@ public class GUI implements ActionListener, KeyListener{
 		 hexField.setText("0");
 		 binField.setText("0");
 		 octField.setText("0");
-		 operation = 0;
+		 op = 0;
 		  
 	 }
 
 	@Override
-	public void keyPressed(KeyEvent e) {	
+	public void keyPressed(KeyEvent e) {
+		
+		
 	}
 	@Override
 	public void keyReleased(KeyEvent arg0) {	
