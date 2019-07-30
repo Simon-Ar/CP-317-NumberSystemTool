@@ -65,6 +65,7 @@ public class Game2048 extends JPanel {
 					playOct.setVisible(false);
 					startNewGame();
 					repaint();
+					System.out.println(mode);
 				}
 			}
 		});
@@ -78,6 +79,7 @@ public class Game2048 extends JPanel {
 					playOct.setVisible(false);
 					startNewGame();
 					repaint();
+					System.out.println(mode);
 				}
 			}
 		});
@@ -92,6 +94,7 @@ public class Game2048 extends JPanel {
 					playOct.setVisible(false);
 					startNewGame();
 					repaint();
+					System.out.println(mode);
 				}
 			}
 		});
@@ -200,15 +203,19 @@ public class Game2048 extends JPanel {
 
 		g.setColor(colorTable[(int) (Math.log(value) / Math.log(2)) + 1]);
 		g.fillRoundRect(215 + c * 121, 115 + r * 121, 106, 106, 7, 7);
+
 		String s = "";
 
 		switch (mode) {
 		case 0:
 			s = Calculator.DecimalToBinary(value);
+			break;
 		case 1:
 			s = Calculator.DecimalToHex(value);
+			break;
 		case 2:
 			s = Calculator.DecimalToOct(value);
+			break;
 		}
 
 		g.setColor(value < 128 ? colorTable[0] : colorTable[1]);
