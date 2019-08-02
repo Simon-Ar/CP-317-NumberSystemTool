@@ -454,9 +454,9 @@ public class GameSnakeNewColours extends JPanel implements Runnable {
 					}
 				} else if (treats.size() > 1)
 					treats.remove(0);
-			}
 		}
 	}
+	
 
         /**
          * drawGrid(Graphics2D g)
